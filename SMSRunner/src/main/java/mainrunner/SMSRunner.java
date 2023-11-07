@@ -45,7 +45,7 @@ public class SMSRunner {
         System.out.println(courseService.toString() + "there");
         Student student = studentService.getStudentByEmail(email);
 
-        if (student == null || !student.getsPass().equals(password)) {
+        if (student == null || !student.getPassword().equals(password)) {
             System.out.println("Invalid credentials. Please try again or select another option.");
         } else {
             System.out.println("Login successful!");
@@ -70,34 +70,46 @@ public class SMSRunner {
 
 
     private static void registerStudentToCourse(Student student, CourseService courseService, Scanner scanner) {
-        StudentService studentService = new StudentService(); // Create an instance of StudentService
+        // Create an instance of StudentService
+        StudentService studentService = new StudentService();
+        
+        // Get a list of all available courses
         List<Course> allCourses = courseService.getAllCourses();
 
+        // Display the available courses
         System.out.println("Available Courses:");
         for (Course course : allCourses) {
             System.out.println(course.getcId() + ". " + course.getcName());
         }
 
+        // Prompt the user to enter the course ID to register
         System.out.print("Enter the course ID to register: ");
         int courseId = scanner.nextInt();
 
+        // Find the selected course by filtering the list of all courses
         Course selectedCourse = allCourses.stream()
                 .filter(course -> course.getcId() == courseId)
                 .findFirst()
                 .orElse(null);
 
+        // Check if the selected course is valid
         if (selectedCourse == null) {
             System.out.println("Invalid course ID. Please try again.");
         } else {
-            List<Course> studentCourses = studentService.getStudentCourses(student.getsEmail());
+            // Get the list of courses that the student is already registered for
+            List<Course> studentCourses = studentService.getStudentCourses(student.getEmail());
+            
+            // Check if the student is already registered for the selected course
             if (studentCourses.contains(selectedCourse)) {
                 System.out.println("You are already registered in that course!");
             } else {
-                studentService.registerStudentToCourse(student.getsEmail(), selectedCourse.getcId());
+                // Register the student for the selected course
+                studentService.registerStudentToCourse(student.getEmail(), selectedCourse.getcId());
                 System.out.println("Successfully registered for " + selectedCourse.getcName() + "!");
             }
         }
     }
+
 
 
 }

@@ -1,23 +1,29 @@
 package jpa.entitymodels;
 
 import javax.persistence.*;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "Student")
 public class Student {
     @Id
-    @Column(name = "email", length = 50, nullable = false) // Updated column name and attributes
+    @Column(name = "email", length = 50, nullable = false)
     private String email;
 
-    @Column(name = "name", length = 50, nullable = false) // Updated column name and attributes
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "password", length = 50, nullable = false) // Updated column name and attributes
+    @Column(name = "password", length = 50, nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", foreignKey = @ForeignKey(name = "fk_student_course"))
-    private Course course;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "student_courses",
+        joinColumns = @JoinColumn(name = "email"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses;
 
     // Constructors
     public Student() {
@@ -31,35 +37,35 @@ public class Student {
     }
 
     // Getters and setters
-    public String getsEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setsEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getsName() {
+    public String getName() {
         return name;
     }
 
-    public void setsName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getsPass() {
+    public String getPassword() {
         return password;
     }
 
-    public void setsPass(String password) {
-        this.password = password; 
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Course getCourse() {
-        return course;
+    public Set<Course> getCourses() {
+        return courses;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }
