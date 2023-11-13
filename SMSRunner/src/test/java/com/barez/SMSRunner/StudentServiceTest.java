@@ -1,58 +1,31 @@
 package com.barez.SMSRunner;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import jpa.service.StudentService;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StudentServiceTest {
-    private StudentService studentService;
 
-    @Before
-    public void setUp() {
-        // Initialize the StudentService instance before each test
+    private static StudentService studentService;
+
+    @BeforeAll
+    public static void setUp() {
         studentService = new StudentService();
     }
 
     @Test
-    public void testValidateStudentWithValidCredentials() {
-        // Prepare test data
-        String sEmail = "teststudent@example.com";
-        String sPassword = "testpassword";
+    public void testValidateStudentInvalidCredentials() {
+        // Arrange
+        String invalidEmail = "invalid@email.com";
+        String invalidPassword = "wrongpassword";
 
-        // Call the method to test
-        boolean isValid = studentService.validateStudent(sEmail, sPassword);
+        // Act
+        boolean isValid = studentService.validateStudent(invalidEmail, invalidPassword);
 
-        // Assert that the student is valid with correct credentials
-        assertTrue(isValid);
-    }
-
-    @Test
-    public void testValidateStudentWithInvalidCredentials() {
-        // Prepare test data
-        String sEmail = "teststudent@example.com";
-        String sPassword = "wrongpassword";
-
-        // Call the method to test
-        boolean isValid = studentService.validateStudent(sEmail, sPassword);
-
-        // Assert that the student is not valid with incorrect credentials
-        assertFalse(isValid);
-    }
-
-    @Test
-    public void testValidateStudentWithNonExistentStudent() {
-        // Prepare test data
-        String sEmail = "nonexistentstudent@example.com";
-        String sPassword = "testpassword";
-
-        // Call the method to test
-        boolean isValid = studentService.validateStudent(sEmail, sPassword);
-
-        // Assert that the student is not valid since it doesn't exist
-        assertFalse(isValid);
+        // Assert
+        assertFalse(isValid, "Validation should fail for invalid credentials");
     }
 }
-

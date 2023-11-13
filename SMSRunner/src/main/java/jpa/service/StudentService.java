@@ -97,8 +97,6 @@ public class StudentService implements StudentDAO {
     }
 
 
-
-
     @Override
     public List<Course> getStudentCourses(String sEmail) {
         try (Session session = factory.openSession()) {
